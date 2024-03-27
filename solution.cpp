@@ -27,13 +27,6 @@ void printOut(int radius, double tolerance) {
 
         for (int x = -(radius + h_border); x <= radius + h_border; x++)
         {
-
-            // ║: 186;
-            // ╗: 187;
-            // ╝: 188;
-            // ╚: 200;
-            // ╔: 201;
-            // ═: 205;
             if (abs(x) == radius + h_border) {
                 cout << (char)186;
                 continue;
@@ -49,16 +42,8 @@ void printOut(int radius, double tolerance) {
                     int char_choice = (prox_to_circle / tolerance) * 3;
                     char char_out = 178 - char_choice;
 
-                    // #define BLK "\e[0;30m"
-                    // #define RED "\e[0;31m"
-                    // #define GRN "\e[0;32m"
-                    // #define YEL "\e[0;33m"
-                    // #define BLU "\e[0;34m"
-                    // #define MAG "\e[0;35m"
-                    // #define CYN "\e[0;36m"
-                    // #define WHT "\e[0;37m"
+
                     string colors[] = { BLU, CYN, GRN, YEL, RED }; // TODO: Background colors for combo
-                    // string colors[] = { CYN};
                     int color_choice = (prox_to_circle / tolerance) * sizeof(colors) / sizeof(colors[0]);
                     auto color_out = colors[color_choice];
 
@@ -76,9 +61,18 @@ void printOut(int radius, double tolerance) {
 
 int main(int argc, char const* argv[])
 {
-    // int radius = atoi(argv[1]);
-    int radius = 3;
-    double tolerance = 2;
+    if (argc != 3) {
+        // TODO: not checking for complete input validation...
+        printf("ERROR: Expected arguments: [radius: int] [tolerance: double] \n");
+        return -1;
+    }
+
+    int radius = atoi(argv[1]);
+    double tolerance = atof(argv[2]);
+    // int radius = 16;
+    // double tolerance = 150;
 
     printOut(radius, tolerance);
+
+    return 0;
 }
