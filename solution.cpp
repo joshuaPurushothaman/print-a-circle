@@ -6,12 +6,11 @@
 
 using namespace std;
 
-void printOut(int radius, double tolerance) {
+void printOut(int radius, double tolerance, bool ascii_compatible) {
     const int v_border = 5;
     const int h_border = v_border;
 
-    for (int y = -(radius + v_border); y <= radius + v_border; y++)
-    {
+    for (int y = -(radius + v_border); y <= radius + v_border; y++) {
         // ║: 186; 
         // ╗: 187; 
         // ╝: 188; 
@@ -19,16 +18,26 @@ void printOut(int radius, double tolerance) {
         // ╔: 201; 
         // ═: 205; 
         if (abs(y) == radius + v_border) {
-            for (int x = -(radius + h_border); x <= radius + h_border; x++)
-                cout << (char)205;
+            for (int x = -(radius + h_border); x <= radius + h_border; x++) {
+                if (ascii_compatible) {
+                    cout << "=";
+                }
+                else {
+                    cout << (char)205;
+                }
+            }
             cout << endl;
             continue;
         }
 
-        for (int x = -(radius + h_border); x <= radius + h_border; x++)
-        {
+        for (int x = -(radius + h_border); x <= radius + h_border; x++) {
             if (abs(x) == radius + h_border) {
-                cout << (char)186;
+                if (ascii_compatible) {
+                    cout << "|";
+                }
+                else {
+                    cout << (char)186;
+                }
                 continue;
             }
             else {
@@ -42,17 +51,26 @@ void printOut(int radius, double tolerance) {
                     int char_choice = (prox_to_circle / tolerance) * 3;
                     char char_out = 178 - char_choice;
 
+                    if (ascii_compatible) {
+                        char_out = '#';
+                    }
+
 
                     string colors[] = { BLU, CYN, GRN, YEL, RED }; // TODO: Background colors for combo
                     int color_choice = (prox_to_circle / tolerance) * sizeof(colors) / sizeof(colors[0]);
-                    auto color_out = colors[color_choice];
+                    string color_out = colors[color_choice];
 
                     cout << color_out << char_out << CRESET;
                 }
-                else // background
-                    // cout << ' ';
+                else {  // background
+                    if (ascii_compatible) {
+                        cout << ' ';
+                    }
+                    else {
+                        cout << (char)176;
+                    }
                     // cout << RED << '.' << CRESET;
-                    cout << (char)176;
+                }
             }
         }
         cout << endl;
@@ -61,18 +79,20 @@ void printOut(int radius, double tolerance) {
 
 int main(int argc, char const* argv[])
 {
-    if (argc != 3) {
+    if (argc != 4) {
         // TODO: not checking for complete input validation...
-        printf("ERROR: Expected arguments: [radius: int] [tolerance: double] \n");
+        printf("ERROR: Expected arguments: [radius: int] [tolerance: double] [ascii_compatible: bool]\n");
         return -1;
     }
 
     int radius = atoi(argv[1]);
     double tolerance = atof(argv[2]);
+    bool ascii_compatible = (bool)atoi(argv[3]);
+
     // int radius = 16;
     // double tolerance = 150;
 
-    printOut(radius, tolerance);
+    printOut(radius, tolerance, ascii_compatible);
 
     return 0;
 }
